@@ -1,0 +1,9 @@
+.card_body{
+    width: 380px;
+    height: 270px;
+    background: #262626;
+}
+
+.card_body p{
+    background: #525252;
+}
