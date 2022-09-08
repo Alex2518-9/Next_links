@@ -3,10 +3,9 @@ import styles from "../styles/Layout.module.css";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 
-
-interface LayoutProps{
-    children: JSX.Element,
-    home: boolean
+interface LayoutProps {
+  children: JSX.Element;
+  home: true;
 }
 
 const name = "Teringer Alex";
@@ -37,7 +36,7 @@ export default function Layout({ children, home }: LayoutProps) {
           </>
         ) : (
           <>
-            <Link href="/"></Link>
+            <Link href="/">Back to Home</Link>
             <h2 className={utilStyles.headingLg}>
               <Link href="/">
                 <a className={utilStyles.colorInherit}>{name}</a>

@@ -1,7 +1,7 @@
-import type { NextPage } from "next";
+
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import { getSortedPostsData, Post } from "../lib/posts";
+import { getSortedPostsData, Post } from "../lib/files";
 import Date from "../components/FormatDate";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
@@ -34,11 +34,11 @@ const Home = ({ allPostsData }: AllPostDaaProps) => {
         <h1 className={styles.title}>Please take whatever you need!</h1>
 
         <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-          <h2 className={utilStyles.headingLg}>Blog</h2>
+        
           <ul className={utilStyles.list}>
             {allPostsData.map(({ id, date, title }) => (
               <li className={utilStyles.listItem} key={id}>
-                <Link href={`/posts/${id}`}>
+                <Link href={`/files/${id}`}>
                   <a>{title}</a>
                 </Link>
                 <br />

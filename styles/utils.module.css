@@ -46,6 +46,11 @@
   .listItem {
     margin: 0 0 1.25rem;
   }
+
+  .listItem a {
+    color: blue;
+    text-decoration: underline;
+  }
   
   .lightText {
     color: #666;
