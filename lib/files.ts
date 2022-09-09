@@ -18,7 +18,8 @@ export interface PostData extends Post {
 const postsDirectory = path.join(process.cwd(), 'files');
 
 export function getSortedPostsData() {
-  // Get file names under /posts
+
+  // Get file names under /files
   const fileNames = fs.readdirSync(postsDirectory);
   const allPostsData = fileNames.map((fileName) => {
     // Remove ".md" from file name to get id
@@ -82,3 +83,15 @@ export async function getPostData(id: string) {
     ...matterResult.data,
   } as PostData;
 }
+
+// get file size
+// const fileDatas = fs.readdirSync(postsDirectory);
+// export const fileSizeInMegabytes = fileDatas.map((fileData) => {
+//   const fileSize = fs.statSync(fileData)
+//   return fileSize.size / (1024 * 1024);
+// });
+
+// console.log(fileSizeInMegabytes);
+
+
+

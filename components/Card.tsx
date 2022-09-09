@@ -9,10 +9,10 @@ interface CardProps {
   id: string;
   title: string;
   date: string;
-  fileSize: number[]
+  // fileSize: number[]
 }
 
-const Card = ({ title, date, id, fileSize }: CardProps) => {
+const Card = ({ title, date, id,  }: CardProps) => {
   return (
     <div className={styles.card_body}>
       <div className={styles.titleAndIcon}>
@@ -23,7 +23,7 @@ const Card = ({ title, date, id, fileSize }: CardProps) => {
       </div>
       <small className={styles.lightText}>
         <Date dateString={date} />
-        {fileSize}
+        {/* {fileSize} */}
       </small>
       <p className={styles.text_container}>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import { getSortedPostsData, Post, fileSizeInMegabytes } from "../lib/files";
+import { getSortedPostsData, Post } from "../lib/files";
 import styles from "../styles/Home.module.css";
 import Card from "../components/Card";
 
@@ -39,7 +39,7 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
             >
               <ul className={styles.list}>
                 {allPostsData.map(({ id, date, title }) => (
-                  <Card key={id} id={id} title={title} date={date} fileSize={fileSizeInMegabytes}/>
+                  <Card key={id} id={id} title={title} date={date} />
                 ))}
               </ul>
             </div>
