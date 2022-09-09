@@ -32,20 +32,20 @@ export default function Layout({ children, home }: LayoutProps) {
       <header className={styles.header}>
         {home ? (
           <>
-            <h1 className={utilStyles.heading2Xl}>{name}</h1>
+            <h1>{name}</h1>
           </>
         ) : (
           <>
             <Link href="/">Back to Home</Link>
-            <h2 className={utilStyles.headingLg}>
+            <h2 className={styles.headingLg}>
               <Link href="/">
-                <a className={utilStyles.colorInherit}>{name}</a>
+                <a>{name}</a>
               </Link>
             </h2>
           </>
         )}
       </header>
-      <main>{children}</main>
+      <main className={styles.part_container}>{children}</main>
       {!home && (
         <div className={styles.backToHome}>
           <Link href="/">
