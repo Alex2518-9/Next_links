@@ -1,13 +1,10 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import { getSortedPostsData, Post } from "../lib/files";
-import Date from "../components/FormatDate";
-import Link from "next/link";
+import { getSortedPostsData, Post, fileSizeInMegabytes } from "../lib/files";
 import styles from "../styles/Home.module.css";
-import utilStyles from "../styles/utils.module.css";
 import Card from "../components/Card";
 
-interface AllPostDaaProps extends Post {
+interface AllPostDataProps extends Post {
   allPostsData: Post[];
 }
 
@@ -20,7 +17,7 @@ export async function getStaticProps() {
   };
 }
 
-const Home = ({ allPostsData }: AllPostDaaProps) => {
+const Home = ({ allPostsData }: AllPostDataProps) => {
   return (
     <Layout home>
       <>
@@ -30,31 +27,24 @@ const Home = ({ allPostsData }: AllPostDaaProps) => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <main className={styles.main}>
-          <div className="grid_container">
-            <h1 className={styles.title}>Your files</h1>
+     
+          <div className={styles.grid_container}>
+            <div className={styles.title_container}>
+              <h1 className={styles.title}>Your files</h1>
+              <input type="text" placeholder="Search" />
+            </div>
 
-            <section
-              className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}
+            <div
+              className={styles.container_body}
             >
-              <ul className={utilStyles.list}>
+              <ul className={styles.list}>
                 {allPostsData.map(({ id, date, title }) => (
-                  <Card key={id}>
-                  <li className={utilStyles.listItem} >
-                    <Link href={`/files/${id}`}>
-                     <a>{title}</a>
-                    </Link>
-                    <br />
-                    <small className={utilStyles.lightText}>
-                      <Date dateString={date} />
-                    </small>
-                  </li>
-                  </Card>
+                  <Card key={id} id={id} title={title} date={date} fileSize={fileSizeInMegabytes}/>
                 ))}
               </ul>
-            </section>
+            </div>
           </div>
-        </main>
+     
       </>
     </Layout>
   );
