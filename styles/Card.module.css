@@ -1,9 +1,44 @@
-.card_body{
-    width: 380px;
-    height: 270px;
-    background: #262626;
+.card_body {
+  width: 380px;
+  height: 270px;
+  background: #262626;
+  padding: 16px;
+  cursor: pointer;
 }
 
-.card_body p{
-    background: #525252;
+.text_container {
+  height: 170px;
+  background: #525252;
+  letter-spacing: 0.16px;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.title_image {
+  color: #f4f4f4;
+  margin-left: 10px;
+}
+
+.titleAndIcon {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card_body:hover {
+  background: #363636;
+  transition:  .4s;
+  transition-timing-function: cubic-bezier(0.4, 0.14, 0.3, 1);
+}
+
+.lightText {
+  color: #666;
+}
+
+.link{
+  cursor: pointer;
+  font-weight: 400;
+  line-height: 28px;
+  font-size: 20px;
 }
