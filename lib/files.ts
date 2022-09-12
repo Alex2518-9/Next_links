@@ -4,13 +4,14 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 
-export interface Post {
+export interface File {
   id: string,
   date: string,
-  title: string
+  title: string,
+  fileSize: number
 }
 
-export interface PostData extends Post {
+export interface PostData extends File {
   contentHtml: string,
 }
 
@@ -28,15 +29,17 @@ export function getSortedPostsData() {
     // Read markdown file as string
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
-
+    const fileStats = fs.statSync(fullPath)
+    const fileSize = fileStats.size;
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents);
     // matterResult.
     // Combine the data with the id
     return {
       id,
+      fileSize,
       ...matterResult.data,
-    } as Post;
+    } as File;
   });
   // Sort posts by date
   return allPostsData.sort(({ date: a }, { date: b }) => {
@@ -87,8 +90,7 @@ export async function getPostData(id: string) {
 // get file size
 // const fileDatas = fs.readdirSync(postsDirectory);
 // export const fileSizeInMegabytes = fileDatas.map((fileData) => {
-//   const fileSize = fs.statSync(fileData)
-//   return fileSize.size / (1024 * 1024);
+
 // });
 
 // console.log(fileSizeInMegabytes);

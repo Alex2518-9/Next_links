@@ -1,11 +1,11 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import { getSortedPostsData, Post } from "../lib/files";
+import { getSortedPostsData, File } from "../lib/files";
 import styles from "../styles/Home.module.css";
 import Card from "../components/Card";
 
-interface AllPostDataProps extends Post {
-  allPostsData: Post[];
+interface AllPostDataProps {
+  allPostsData: File[];
 }
 
 export async function getStaticProps() {
@@ -27,24 +27,20 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-     
-          <div className={styles.grid_container}>
-            <div className={styles.title_container}>
-              <h1 className={styles.title}>Your files</h1>
-              <input type="text" placeholder="Search" />
-            </div>
-
-            <div
-              className={styles.container_body}
-            >
-              <ul className={styles.list}>
-                {allPostsData.map(({ id, date, title }) => (
-                  <Card key={id} id={id} title={title} date={date} />
-                ))}
-              </ul>
-            </div>
+        <div className={styles.grid_container}>
+          <div className={styles.title_container}>
+            <h1 className={styles.title}>Your files</h1>
+            <input type="text" placeholder="Search" />
           </div>
-     
+
+          <div className={styles.container_body}>
+            <ul className={styles.list}>
+              {allPostsData.map((file) => (
+                <Card key={file.id} {...file} />
+              ))}
+            </ul>
+          </div>
+        </div>
       </>
     </Layout>
   );
