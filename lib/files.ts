@@ -29,6 +29,7 @@ export function getSortedPostsData() {
     // Read markdown file as string
     const fullPath = path.join(postsDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
+    // get file size
     const fileStats = fs.statSync(fullPath)
     const fileSize = fileStats.size;
     // Use gray-matter to parse the post metadata section
@@ -87,13 +88,7 @@ export async function getPostData(id: string) {
   } as PostData;
 }
 
-// get file size
-// const fileDatas = fs.readdirSync(postsDirectory);
-// export const fileSizeInMegabytes = fileDatas.map((fileData) => {
 
-// });
-
-// console.log(fileSizeInMegabytes);
 
 
 
