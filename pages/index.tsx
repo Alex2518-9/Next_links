@@ -36,7 +36,7 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
           <div className={styles.container_body}>
             <ul className={styles.list}>
               {allPostsData.map((file) => (
-                <Card key={file.id} {...file} />
+                <Card key={file.id} {...file}/>
               ))}
             </ul>
           </div>
