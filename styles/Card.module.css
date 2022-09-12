@@ -21,6 +21,13 @@
   grid-column: 10 / 13;
 }
 
+.doubled {
+  max-height: 540px;
+  background: #262626;
+  padding: 16px;
+  cursor: pointer;
+}
+
 .text_container {
   height: 170px;
   background: #525252;

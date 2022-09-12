@@ -3,6 +3,7 @@ import Layout, { siteTitle } from "../components/Layout";
 import { getSortedPostsData, File } from "../lib/files";
 import styles from "../styles/Home.module.css";
 import Card from "../components/Card";
+import { useState } from "react";
 
 interface AllPostDataProps {
   allPostsData: File[];
@@ -18,6 +19,22 @@ export async function getStaticProps() {
 }
 
 const Home = ({ allPostsData }: AllPostDataProps) => {
+  const [isActive, setActive] = useState(false);
+  const [search, setSearch] = useState<string[]>([]);
+
+  const onDoubled = () => {
+    setActive(!isActive);
+  };
+
+  // search by title
+  const searchedContact = [...allPostsData].filter((data) => {
+    return search.length === 0
+      ? true
+      : search.every((characters: string) =>
+          data.title.toLowerCase().includes(characters.toLowerCase())
+        );
+  });
+
   return (
     <Layout home>
       <>
@@ -30,13 +47,27 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
         <div className={styles.grid_container}>
           <div className={styles.title_container}>
             <h1 className={styles.title}>Your files</h1>
-            <input type="text" placeholder="Search" />
+            <input
+              type="text"
+              placeholder="Search"
+              defaultValue={search.join(" ")}
+              onChange={(e) =>
+                setSearch(
+                  e.target.value.trim() ? e.target.value.trim().split(" ") : []
+                )
+              }
+            />
           </div>
 
           <div className={styles.container_body}>
             <ul className={styles.list}>
-              {allPostsData.map((file) => (
-                <Card key={file.id} {...file}/>
+              {searchedContact.map((file) => (
+                <Card
+                  key={file.id}
+                  {...file}
+                  onClick={onDoubled}
+                  isActive={isActive}
+                />
               ))}
             </ul>
           </div>
