@@ -6,14 +6,17 @@ import React from "react";
 import Image from "next/image";
 import { File } from "../lib/files";
 
-interface CardProps extends File {
-  isActive : boolean,
-  onClick: React.MouseEventHandler
+export interface CardProps extends File {
+  className: string;
+  onClick: React.MouseEventHandler;
 }
 
-const Card = ({ title, date, id, fileSize, isActive, onClick }: CardProps) => {
+const Card = ({ title, date, id, fileSize, onClick, className }: CardProps) => {
   return (
-    <li className={isActive ? styles.card_body : styles.doubled} onClick={onClick}>
+    <li
+      className={className ? className : styles.standard}
+      onClick={onClick}
+    >
       <div className={styles.titleAndIcon}>
         <Link href={`/files/${id}`}>
           <h3 className={styles.link}>{title}</h3>

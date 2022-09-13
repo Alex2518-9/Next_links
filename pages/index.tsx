@@ -2,8 +2,10 @@ import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
 import { getSortedPostsData, File } from "../lib/files";
 import styles from "../styles/Home.module.css";
+import cardStyles from "../styles/Card.module.css";
 import Card from "../components/Card";
 import { useState } from "react";
+import DoubledCard from "../components/DoubledCard";
 
 interface AllPostDataProps {
   allPostsData: File[];
@@ -19,21 +21,26 @@ export async function getStaticProps() {
 }
 
 const Home = ({ allPostsData }: AllPostDataProps) => {
-  const [isActive, setActive] = useState(false);
   const [search, setSearch] = useState<string[]>([]);
-
-  const onDoubled = () => {
-    setActive(!isActive);
-  };
+  const [selectedCard, setSelectedCard] = useState("");
 
   // search by title
-  const searchedContact = [...allPostsData].filter((data) => {
+  const searchedLink = [...allPostsData].filter((data) => {
     return search.length === 0
       ? true
       : search.every((characters: string) =>
           data.title.toLowerCase().includes(characters.toLowerCase())
         );
   });
+
+  // save selected card
+  const onDoubled = (id: string) => {
+    setSelectedCard(id);
+  };
+
+  const onClose = () => {
+    setSelectedCard("");
+  };
 
   return (
     <Layout home>
@@ -49,7 +56,7 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
             <h1 className={styles.title}>Your files</h1>
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search title.."
               defaultValue={search.join(" ")}
               onChange={(e) =>
                 setSearch(
@@ -60,15 +67,33 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
           </div>
 
           <div className={styles.container_body}>
-            <ul className={styles.list}>
-              {searchedContact.map((file) => (
-                <Card
-                  key={file.id}
-                  {...file}
-                  onClick={onDoubled}
-                  isActive={isActive}
-                />
-              ))}
+            <ul
+              className={
+                selectedCard.length === 0
+                  ? styles.list
+                  : styles.containsDoubledCard
+              }
+            >
+              {searchedLink.map((file) =>
+                file.id === selectedCard ? (
+                  <div>
+                    <DoubledCard
+                      onClose={() => onClose()}
+                      key={file.id}
+                      {...file}
+                      onClick={() => onDoubled(file.id)}
+                      className={styles.double}
+                    />
+                  </div>
+                ) : (
+                  <Card
+                    key={file.id}
+                    {...file}
+                    onClick={() => onDoubled(file.id)}
+                    className={cardStyles.standard}
+                  />
+                )
+              )}
             </ul>
           </div>
         </div>
