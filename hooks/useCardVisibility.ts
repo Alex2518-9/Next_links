@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-const useCardVisibility = () => {
-  const [visible, setVisible] = useState(false);
+const useCardSelection = () => {
+  const [selected, setSelected] = useState(false);
 
   return {
-    visible,
-    setVisible: () => setVisible(true),
-    setInvisible: () => setVisible(false),
+    selected,
+    setSelected: () => setSelected(true),
+    setNoneSelected: () => setSelected(false),
   };
 };
 
-export { useCardVisibility };
+export { useCardSelection };
