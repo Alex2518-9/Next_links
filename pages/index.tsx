@@ -2,10 +2,14 @@ import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
 import { getSortedPostsData, File } from "../lib/files";
 import styles from "../styles/Home.module.css";
-import cardStyles from "../styles/Card.module.css";
 import Card from "../components/Card";
 import { useState } from "react";
-import DoubledCard from "../components/DoubledCard";
+import Button from "../components/Button";
+import DownIcon from "../public/chevronDown.svg";
+import PlusIcon from "../public/plusIcon.svg";
+import DownloadIcon from "../public/downloadIcon.svg";
+import TrashIcon from "../public/trashIcon.svg";
+import { useCardSelection } from "../hooks/useCardVisibility";
 
 interface AllPostDataProps {
   allPostsData: File[];
@@ -23,6 +27,9 @@ export async function getStaticProps() {
 const Home = ({ allPostsData }: AllPostDataProps) => {
   const [search, setSearch] = useState<string[]>([]);
   const [selectedCard, setSelectedCard] = useState("");
+  const [selectedMode, setSelectedMode] = useState(false);
+
+  const { selected, setSelected, setNoneSelected } = useCardSelection();
 
   // search by title
   const searchedLink = [...allPostsData].filter((data) => {
@@ -34,13 +41,17 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
   });
 
   // save selected card
-  const onDoubled = (id: string) => {
-    setSelectedCard(id);
+  const onSelected = (id: string) => {
+    // if (selectedCard && selectedCard === id) {
+    //   setSelectedCard("");
+    //   setSelectedMode(!selectedMode);
+    // } else {
+      setSelectedCard(id);
+      setSelectedMode(!selectedMode);
+    // }
   };
 
-  const onClose = () => {
-    setSelectedCard("");
-  };
+  const abc = () => {};
 
   return (
     <Layout home>
@@ -53,7 +64,44 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
 
         <div className={styles.grid_container}>
           <div className={styles.title_container}>
-            <h1 className={styles.title}>Your files</h1>
+            {selectedMode ? (
+              <div className={styles.buttonsContainer}>
+                <Button
+                  text="Download selected"
+                  icon={DownloadIcon}
+                  className={styles.download}
+                  onClick={abc}
+                />
+                <Button
+                  text="Delete"
+                  icon={TrashIcon}
+                  className={styles.delete}
+                  onClick={abc}
+                />
+                <Button
+                  text="Cancel"
+                  icon={PlusIcon}
+                  className={styles.cancel}
+                  onClick={abc}
+                />
+              </div>
+            ) : (
+              <div className={styles.buttonContainer}>
+                <Button
+                  text="Upload"
+                  icon={DownIcon}
+                  className={styles.upload}
+                  onClick={abc}
+                />
+                <Button
+                  text="Create"
+                  icon={PlusIcon}
+                  className={styles.create}
+                  onClick={abc}
+                />
+              </div>
+            )}
+
             <input
               type="text"
               placeholder="Search title.."
@@ -71,26 +119,23 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
               className={
                 selectedCard.length === 0
                   ? styles.list
-                  : styles.containsDoubledCard
+                  : styles.containsSelectedCard
               }
             >
               {searchedLink.map((file) =>
                 file.id === selectedCard ? (
-                  <div>
-                    <DoubledCard
-                      onClose={() => onClose()}
-                      key={file.id}
-                      {...file}
-                      onClick={() => onDoubled(file.id)}
-                      className={styles.double}
-                    />
-                  </div>
+                  <Card
+                    key={file.id}
+                    {...file}
+                    onClick={() => onSelected(file.id)}
+                    selected={selectedMode}
+                  />
                 ) : (
                   <Card
                     key={file.id}
                     {...file}
-                    onClick={() => onDoubled(file.id)}
-                    className={cardStyles.standard}
+                    onClick={() => onSelected(file.id)}
+                    selected={selectedMode}
                   />
                 )
               )}
