@@ -9,8 +9,9 @@ import DownIcon from "../public/chevronDown.svg";
 import PlusIcon from "../public/plusIcon.svg";
 import DownloadIcon from "../public/downloadIcon.svg";
 import TrashIcon from "../public/trashIcon.svg";
-import { useCardSelection } from "../hooks/useCardVisibility";
 import SelectedCard from "../components/SelectedCard";
+import useDownloader from "react-use-downloader";
+
 
 interface AllPostDataProps {
   allPostsData: File[];
@@ -26,11 +27,16 @@ export async function getStaticProps() {
 }
 
 const Home = ({ allPostsData }: AllPostDataProps) => {
+ 
+
   const [search, setSearch] = useState<string[]>([]);
   const [selectedCard, setSelectedCard] = useState<string[]>([]);
   const [selectedMode, setSelectedMode] = useState<boolean>(false);
 
-  const { selected, setSelected, setNoneSelected } = useCardSelection();
+  // download files
+  const { download } = useDownloader();
+  const fileUrl = allPostsData[0].fullPath;
+  const fileName = selectedCard[0];
 
   // search by title
   const searchedLink = [...allPostsData].filter((data) => {
@@ -66,6 +72,8 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
     setSelectedCard([]);
   };
 
+ 
+
   const abc = () => {};
 
   return (
@@ -85,7 +93,7 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
                   text="Download selected"
                   icon={DownloadIcon}
                   className={styles.download}
-                  onClick={abc}
+                  onClick={() => download(fileUrl, fileName)}
                 />
                 <Button
                   text="Delete"
@@ -148,9 +156,9 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
               )}
             </ul>
           </div>
-        {selectedMode && (
-          <div className={styles.counter}>{selectedCard.length}</div>
-        )}
+          {selectedMode && (
+            <div className={styles.counter}>{selectedCard.length}</div>
+          )}
         </div>
       </>
     </Layout>
