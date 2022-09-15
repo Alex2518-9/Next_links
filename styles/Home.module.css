@@ -48,7 +48,7 @@
   cursor: pointer;
 }
 
-.buttonsContainer{
+.buttonsContainer {
   align-items: center;
   justify-content: center;
   display: flex;
@@ -58,7 +58,7 @@
   font-weight: 400;
 }
 
-.download{
+.download {
   background: #006400;
   color: #f4f4f4;
   border: none;
@@ -68,8 +68,8 @@
   cursor: pointer;
 }
 
-.delete{
-  background: #93000A;
+.delete {
+  background: #93000a;
   color: #f4f4f4;
   border: none;
   height: 40px;
@@ -78,7 +78,7 @@
   cursor: pointer;
 }
 
-.cancel{
+.cancel {
   background: #6f6f6f;
   color: #f4f4f4;
   border: none;
@@ -133,22 +133,4 @@
   font-size: 32px;
   font-weight: 400;
 }
-
-.containsSelectedCard{
-  max-height: 100%;
-  min-height: 0;
-  max-width: 100%;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 32px;
-  padding: 0;
-  margin: 0;
-  overflow: scroll;
-}
-
-.containsSelectedCard::-webkit-scrollbar {
-  display: none;
-}
-
 

@@ -13,9 +13,12 @@ export interface CardProps extends File {
 }
 
 const Card = ({ title, date, id, fileSize, onClick, selected }: CardProps) => {
-  {
-    return selected === false ? (
-      <li className={styles.standard} onClick={onClick}>
+  return (
+    <li
+      className={selected ? styles.isSelected : styles.standard}
+      onClick={onClick}
+    >
+      <div className={styles.titleContainer}>
         <div className={styles.titleAndIcon}>
           <Link href={`/files/${id}`}>
             <h3 className={styles.link}>{title}</h3>
@@ -29,48 +32,23 @@ const Card = ({ title, date, id, fileSize, onClick, selected }: CardProps) => {
             title="markdown"
           />
         </div>
-        <small className={styles.lightText}>
-          <Date dateString={date} />
-          <span>{fileSize} Bytes</span>
-        </small>
-        <p className={styles.text_container}>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus
-          inventore error totam voluptatem voluptatibus, illum ipsam rem
-          provident optio adipisci, quasi ullam. Dolore, fuga sit.
-        </p>
-      </li>
-    ) : (
-      <li className={styles.isSelected} onClick={onClick}>
-        <div className={styles.titleContainer}>
-          <div className={styles.titleAndIcon}>
-            <Link href={`/files/${id}`}>
-              <h3 className={styles.link}>{title}</h3>
-            </Link>
-            <Image
-              height={20}
-              width={24}
-              className={styles.title_image}
-              src={mdIcon}
-              alt="markdown"
-              title="markdown"
-            />
-          </div>
+        {selected && (
           <div className={styles.close}>
             <Image src={pipaIcon} alt="" />
           </div>
-        </div>
-        <small className={styles.lightText}>
-          <Date dateString={date} />
-          <span>{fileSize} Bytes</span>
-        </small>
-        <p className={styles.text_container}>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus
-          inventore error totam voluptatem voluptatibus, illum ipsam rem
-          provident optio adipisci, quasi ullam. Dolore, fuga sit.
-        </p>
-      </li>
-    );
-  }
+        )}
+      </div>
+      <small className={styles.lightText}>
+        <Date dateString={date} />
+        <span>{fileSize} Bytes</span>
+      </small>
+      <p className={styles.text_container}>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus
+        inventore error totam voluptatem voluptatibus, illum ipsam rem provident
+        optio adipisci, quasi ullam. Dolore, fuga sit.
+      </p>
+    </li>
+  );
 };
 
 export default Card;

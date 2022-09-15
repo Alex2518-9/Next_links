@@ -26,8 +26,8 @@ export async function getStaticProps() {
 
 const Home = ({ allPostsData }: AllPostDataProps) => {
   const [search, setSearch] = useState<string[]>([]);
-  const [selectedCard, setSelectedCard] = useState("");
-  const [selectedMode, setSelectedMode] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<string[]>([]);
+  const [selectedMode, setSelectedMode] = useState<boolean>(false);
 
   const { selected, setSelected, setNoneSelected } = useCardSelection();
 
@@ -40,16 +40,30 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
         );
   });
 
-  // save selected card
+  // save selected cards
   const onSelected = (id: string) => {
-    // if (selectedCard && selectedCard === id) {
-    //   setSelectedCard("");
-    //   setSelectedMode(!selectedMode);
-    // } else {
-      setSelectedCard(id);
-      setSelectedMode(!selectedMode);
-    // }
+      if (selectedCard.length === 0) {
+        setSelectedCard([...selectedCard, id]);
+        setSelectedMode(!selectedMode);
+      }else {
+        if(selectedCard.includes(id)){
+        setSelectedCard([...removeArrayElement(selectedCard, id)]) 
+        }else{
+          setSelectedCard([...selectedCard, id]);
+        }}
+        
   };
+  console.log(selectedCard);
+  
+  function removeArrayElement(array: string[], element: string): string[] {
+    return array.filter((item) => item !== element);
+  }
+
+  // return unSelected mode
+  const onCancel = () => {
+    setSelectedMode(!selectedMode);
+    setSelectedCard([]);
+  }
 
   const abc = () => {};
 
@@ -82,7 +96,7 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
                   text="Cancel"
                   icon={PlusIcon}
                   className={styles.cancel}
-                  onClick={abc}
+                  onClick={onCancel}
                 />
               </div>
             ) : (
@@ -115,30 +129,19 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
           </div>
 
           <div className={styles.container_body}>
-            <ul
-              className={
-                selectedCard.length === 0
-                  ? styles.list
-                  : styles.containsSelectedCard
+            <ul className={styles.list}>
+              {
+                searchedLink.map((file) => (
+                  // file.id === selectedCard && (
+                  <Card
+                    key={file.id}
+                    {...file}
+                    onClick={() => onSelected(file.id)}
+                    selected={selectedMode}
+                  />
+                ))
+                // )
               }
-            >
-              {searchedLink.map((file) =>
-                file.id === selectedCard ? (
-                  <Card
-                    key={file.id}
-                    {...file}
-                    onClick={() => onSelected(file.id)}
-                    selected={selectedMode}
-                  />
-                ) : (
-                  <Card
-                    key={file.id}
-                    {...file}
-                    onClick={() => onSelected(file.id)}
-                    selected={selectedMode}
-                  />
-                )
-              )}
             </ul>
           </div>
         </div>

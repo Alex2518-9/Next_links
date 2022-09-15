@@ -51,6 +51,10 @@
   transition-timing-function: cubic-bezier(0.4, 0.14, 0.3, 1);
 }
 
+.titleContainer{
+  display: flex;
+}
+
 .text_container {
   height: 170px;
   background: #525252;
