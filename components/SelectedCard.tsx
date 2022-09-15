@@ -1,23 +1,23 @@
-import styles from "../styles/Card.module.css";
-import Date from "../components/FormatDate";
-import mdIcon from "../public/md_icon.svg";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
-import { File } from "../lib/files";
+import Date from "./FormatDate";
+import styles from "../styles/Card.module.css";
+import { CardProps } from "./Card";
+import pipaIcon from "../public/pipaIcon.svg";
+import mdIcon from "../public/md_icon.svg";
 
+interface selectedCardPropps extends CardProps {}
 
-export interface CardProps extends File {
-  onClick: React.MouseEventHandler;
-
-}
-
-const Card = ({ title, date, id, fileSize, onClick }: CardProps) => {
+const SelectedCard = ({
+  title,
+  date,
+  id,
+  fileSize,
+  onClick,
+}: selectedCardPropps) => {
   return (
-    <li
-      className={styles.standard}
-      onClick={onClick}
-    >
+    <li className={styles.isSelected} onClick={onClick}>
       <div className={styles.titleContainer}>
         <div className={styles.titleAndIcon}>
           <Link href={`/files/${id}`}>
@@ -32,7 +32,10 @@ const Card = ({ title, date, id, fileSize, onClick }: CardProps) => {
             title="markdown"
           />
         </div>
-      
+
+        <div className={styles.close}>
+          <Image src={pipaIcon} alt="" />
+        </div>
       </div>
       <small className={styles.lightText}>
         <Date dateString={date} />
@@ -47,4 +50,4 @@ const Card = ({ title, date, id, fileSize, onClick }: CardProps) => {
   );
 };
 
-export default Card;
+export default SelectedCard;

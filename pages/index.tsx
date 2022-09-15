@@ -10,6 +10,7 @@ import PlusIcon from "../public/plusIcon.svg";
 import DownloadIcon from "../public/downloadIcon.svg";
 import TrashIcon from "../public/trashIcon.svg";
 import { useCardSelection } from "../hooks/useCardVisibility";
+import SelectedCard from "../components/SelectedCard";
 
 interface AllPostDataProps {
   allPostsData: File[];
@@ -42,19 +43,19 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
 
   // save selected cards
   const onSelected = (id: string) => {
-      if (selectedCard.length === 0) {
+    if (selectedCard.length === 0) {
+      setSelectedCard([...selectedCard, id]);
+      setSelectedMode(!selectedMode);
+    } else {
+      if (selectedCard.includes(id)) {
+        setSelectedCard([...removeArrayElement(selectedCard, id)]);
+      } else {
         setSelectedCard([...selectedCard, id]);
-        setSelectedMode(!selectedMode);
-      }else {
-        if(selectedCard.includes(id)){
-        setSelectedCard([...removeArrayElement(selectedCard, id)]) 
-        }else{
-          setSelectedCard([...selectedCard, id]);
-        }}
-        
+      }
+    }
   };
   console.log(selectedCard);
-  
+
   function removeArrayElement(array: string[], element: string): string[] {
     return array.filter((item) => item !== element);
   }
@@ -63,7 +64,7 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
   const onCancel = () => {
     setSelectedMode(!selectedMode);
     setSelectedCard([]);
-  }
+  };
 
   const abc = () => {};
 
@@ -130,20 +131,26 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
 
           <div className={styles.container_body}>
             <ul className={styles.list}>
-              {
-                searchedLink.map((file) => (
-                  // file.id === selectedCard && (
+              {searchedLink.map((file) =>
+                selectedCard.includes(file.id) ? (
+                  <SelectedCard
+                    key={file.id}
+                    {...file}
+                    onClick={() => onSelected(file.id)}
+                  />
+                ) : (
                   <Card
                     key={file.id}
                     {...file}
                     onClick={() => onSelected(file.id)}
-                    selected={selectedMode}
                   />
-                ))
-                // )
-              }
+                )
+              )}
             </ul>
           </div>
+        {selectedMode && (
+          <div className={styles.counter}>{selectedCard.length}</div>
+        )}
         </div>
       </>
     </Layout>
