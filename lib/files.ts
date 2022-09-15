@@ -8,7 +8,8 @@ export interface File {
   id: string,
   date: string,
   title: string,
-  fileSize: number
+  fileSize: number,
+  fullPath: string
 }
 
 export interface PostData extends File {
@@ -40,6 +41,7 @@ export function getSortedPostsData() {
       id,
       fileSize,
       ...matterResult.data,
+      fullPath,
     } as File;
   });
   // Sort posts by date
