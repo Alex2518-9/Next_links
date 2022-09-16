@@ -3,7 +3,7 @@ import styles from '../styles/Button.module.css'
 import {classNames} from '../utiles/className'
 import Image, { StaticImageData } from 'next/image'
 
-interface ButtonProps {
+export interface ButtonProps {
   text: string;
   icon: StaticImageData,
   className: string,
@@ -12,7 +12,7 @@ interface ButtonProps {
 
 const Button = ({ text, icon, className, onClick }: ButtonProps) => {
   return (
-    <button className={classNames(`${styles.btn} ${className}`)} onClick={onClick}>
+    <button className={classNames(`${styles.btn} ${className}`)}  onClick={onClick}>
         <div>
             {text}
         </div>
