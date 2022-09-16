@@ -1,15 +1,17 @@
 import fs from 'fs';
 import path from 'path';
+import download from 'download'
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+
 
 export interface File {
   id: string,
   date: string,
   title: string,
   fileSize: number,
-  fullPath: string
+  fileContents: string
 }
 
 export interface PostData extends File {
@@ -17,18 +19,18 @@ export interface PostData extends File {
 }
 
 
-const postsDirectory = path.join(process.cwd(), 'files');
+const filesDirectory = path.join(process.cwd(), 'files');
 
 export function getSortedPostsData() {
 
   // Get file names under /files
-  const fileNames = fs.readdirSync(postsDirectory);
-  const allPostsData = fileNames.map((fileName) => {
+  const fileNames = fs.readdirSync(filesDirectory);
+  const allFilesData = fileNames.map((fileName) => {
     // Remove ".md" from file name to get id
     const id = fileName.replace(/\.md$/, '');
 
     // Read markdown file as string
-    const fullPath = path.join(postsDirectory, fileName);
+    const fullPath = path.join(filesDirectory, fileName);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     // get file size
     const fileStats = fs.statSync(fullPath)
@@ -41,11 +43,11 @@ export function getSortedPostsData() {
       id,
       fileSize,
       ...matterResult.data,
-      fullPath,
+      fileContents,
     } as File;
   });
   // Sort posts by date
-  return allPostsData.sort(({ date: a }, { date: b }) => {
+  return allFilesData.sort(({ date: a }, { date: b }) => {
     if (a < b) {
       return 1;
     } else if (a > b) {
@@ -59,7 +61,7 @@ export function getSortedPostsData() {
 
 
 export function getAllPostIds() {
-  const fileNames = fs.readdirSync(postsDirectory);
+  const fileNames = fs.readdirSync(filesDirectory);
   return fileNames.map((fileName) => {
     return {
       params: {
@@ -70,7 +72,7 @@ export function getAllPostIds() {
 }
 
 export async function getPostData(id: string) {
-  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const fullPath = path.join(filesDirectory, `${id}.md`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
 
   // Use gray-matter to parse the post metadata section
@@ -92,5 +94,16 @@ export async function getPostData(id: string) {
 
 
 
+
+
+export async function downloadFile(ids: string[]) {
+  for (const id of ids) {
+    const fullPath = path.join(filesDirectory, `${id}.md`);
+    const data = await download(fullPath); //, dist : letrehoz egy ilyen nevu mappat es oda teszi bele, {extract: false} -> zip file-t tolt le
+    fs.writeFileSync("../destination/test.md", data);
+    console.log("done");
+  }
+
+}
 
 

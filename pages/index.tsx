@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import { getSortedPostsData, File } from "../lib/files";
+import { getSortedPostsData, File, downloadFile } from "../lib/files";
 import styles from "../styles/Home.module.css";
 import Card from "../components/Card";
 import { useState } from "react";
@@ -10,36 +10,34 @@ import PlusIcon from "../public/plusIcon.svg";
 import DownloadIcon from "../public/downloadIcon.svg";
 import TrashIcon from "../public/trashIcon.svg";
 import SelectedCard from "../components/SelectedCard";
-import useDownloader from "react-use-downloader";
-
+// import useDownloader from "react-use-downloader";
+// import fileDownload from "js-file-download";
+// import axios from "axios";
+import DownloadButton from "../components/DownloadButton";
 
 interface AllPostDataProps {
-  allPostsData: File[];
+  allFilesData: File[];
 }
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
+  const allFilesData = getSortedPostsData();
   return {
     props: {
-      allPostsData,
+      allFilesData,
     },
   };
 }
 
-const Home = ({ allPostsData }: AllPostDataProps) => {
- 
-
+const Home = ({ allFilesData }: AllPostDataProps) => {
   const [search, setSearch] = useState<string[]>([]);
   const [selectedCard, setSelectedCard] = useState<string[]>([]);
   const [selectedMode, setSelectedMode] = useState<boolean>(false);
 
-  // download files
-  const { download } = useDownloader();
-  const fileUrl = allPostsData[0].fullPath;
-  const fileName = selectedCard[0];
+  const fileUrl = allFilesData[0].fileContents;
+  // const fileName = selectedCard[0];
 
   // search by title
-  const searchedLink = [...allPostsData].filter((data) => {
+  const searchedLink = [...allFilesData].filter((data) => {
     return search.length === 0
       ? true
       : search.every((characters: string) =>
@@ -60,7 +58,6 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
       }
     }
   };
-  console.log(selectedCard);
 
   function removeArrayElement(array: string[], element: string): string[] {
     return array.filter((item) => item !== element);
@@ -72,9 +69,14 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
     setSelectedCard([]);
   };
 
- 
-
   const abc = () => {};
+
+  // download files
+  const onDownload = (ids: string[]) => {
+    if (selectedCard.length > 0) {
+      // downloadFile(ids);
+    }
+  };
 
   return (
     <Layout home>
@@ -89,12 +91,13 @@ const Home = ({ allPostsData }: AllPostDataProps) => {
           <div className={styles.title_container}>
             {selectedMode ? (
               <div className={styles.buttonsContainer}>
-                <Button
+                <DownloadButton
                   text="Download selected"
                   icon={DownloadIcon}
                   className={styles.download}
-                  onClick={() => download(fileUrl, fileName)}
+                  onClick={() => onDownload(selectedCard)}
                 />
+
                 <Button
                   text="Delete"
                   icon={TrashIcon}
