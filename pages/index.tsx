@@ -34,7 +34,6 @@ const Home = ({ allFilesData }: AllPostDataProps) => {
   const [selectedMode, setSelectedMode] = useState<boolean>(false);
 
   const fileUrl = allFilesData[0].fileContents;
-  // const fileName = selectedCard[0];
 
   // search by title
   const searchedLink = [...allFilesData].filter((data) => {

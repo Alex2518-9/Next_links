@@ -100,7 +100,7 @@ export async function downloadFile(ids: string[]) {
   for (const id of ids) {
     const fullPath = path.join(filesDirectory, `${id}.md`);
     const data = await download(fullPath); //, dist : letrehoz egy ilyen nevu mappat es oda teszi bele, {extract: false} -> zip file-t tolt le
-    fs.writeFileSync("../destination/test.md", data);
+    fs.writeFileSync(`../destination/${id}.md`, data);
     console.log("done");
   }
 
