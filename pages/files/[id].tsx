@@ -1,18 +1,23 @@
 import Layout from "../../components/Layout";
-import { getAllPostIds, getPostData, PostData } from "../../lib/files";
+import { getAllPostIds } from "../../lib/files";
 import Head from "next/head";
 import Date from "../../components/FormatDate";
 import utilStyles from "../../styles/utils.module.css";
 import styles from "../../styles/Card.module.css";
 import Link from "next/link";
+import getPostData, { FileData } from "../api/getFileById";
+import { useEffect, useState } from "react";
+import axios from 'axios'
 
 interface PageProps {
   params: { id: string };
 }
 
 interface PostProps {
-  postData: PostData;
+  postData: FileData;
 }
+
+
 
 export async function getStaticProps({ params }: PageProps) {
   const postData = await getPostData(params.id);
@@ -32,6 +37,16 @@ export async function getStaticPaths() {
 }
 
 export default function Post({ postData }: PostProps) {
+
+  // const [data, setData] = useState<File[]>([]);
+
+  // useEffect(() => {
+  //   axios.get('../api/getFileById').then((res) => {
+  //     const oneFile = res.data;
+  //     setData(oneFile);
+  //   })
+  // }, []);
+
   return (
     <Layout home>
       <>

@@ -1,42 +1,44 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/Layout";
-import { getSortedPostsData, File, downloadFile } from "../lib/files";
+import { File } from "./api/getFiles";
 import styles from "../styles/Home.module.css";
 import Card from "../components/Card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import DownIcon from "../public/chevronDown.svg";
 import PlusIcon from "../public/plusIcon.svg";
 import DownloadIcon from "../public/downloadIcon.svg";
 import TrashIcon from "../public/trashIcon.svg";
 import SelectedCard from "../components/SelectedCard";
-// import useDownloader from "react-use-downloader";
-// import fileDownload from "js-file-download";
-// import axios from "axios";
 import DownloadButton from "../components/DownloadButton";
+import axios from "axios";
+import { downloadFile } from "./api/downloadSelectedFile";
 
-interface AllPostDataProps {
-  allFilesData: File[];
-}
+// interface AllPostDataProps {
+//   params: File[];
+// }
 
-export async function getStaticProps() {
-  const allFilesData = getSortedPostsData();
-  return {
-    props: {
-      allFilesData,
-    },
-  };
-}
+// export async function downloadFiles ({params}: AllPostDataProps) => {
+//   const downloadDatas = await downloadFile(params)
+//   return {downloadDatas};
+// }
 
-const Home = ({ allFilesData }: AllPostDataProps) => {
+const Home = () => {
   const [search, setSearch] = useState<string[]>([]);
   const [selectedCard, setSelectedCard] = useState<string[]>([]);
   const [selectedMode, setSelectedMode] = useState<boolean>(false);
+  const [files, setFiles] = useState<File[]>([]);
 
-  const fileUrl = allFilesData[0].fileContents;
+  // fetching files
+  useEffect(() => {
+    axios.get("./api/getFiles").then((response) => {
+      const fileDatas = response.data;
+      setFiles(fileDatas);
+    });
+  }, []);
 
   // search by title
-  const searchedLink = [...allFilesData].filter((data) => {
+  const searchedLink = [...files].filter((data) => {
     return search.length === 0
       ? true
       : search.every((characters: string) =>
@@ -73,7 +75,11 @@ const Home = ({ allFilesData }: AllPostDataProps) => {
   // download files
   const onDownload = (ids: string[]) => {
     if (selectedCard.length > 0) {
-      // downloadFile(ids);
+      axios({
+        method: "get",
+        url: "../pages/api/downloadSelectedFile",
+        data: ids,
+      });
     }
   };
 
