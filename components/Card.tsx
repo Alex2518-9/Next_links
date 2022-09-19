@@ -4,7 +4,7 @@ import mdIcon from "../public/md_icon.svg";
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { File } from "../lib/files";
+import { File } from "../pages/api/getFiles";
 
 
 export interface CardProps extends File {
