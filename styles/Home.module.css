@@ -105,7 +105,7 @@
 
 .container_body {
   display: grid;
-  max-height: 890px;
+  max-height: 85vh;
   max-width: 100%;
   min-height: 0;
 }
@@ -115,7 +115,7 @@
 }
 
 .list {
-  max-height: 100%;
+  max-height: auto;
   min-height: 0;
   max-width: 100%;
   list-style: none;
