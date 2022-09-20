@@ -10,7 +10,8 @@ export interface File {
     date: string,
     title: string,
     fileSize: number,
-    fileContents: string
+    fileContents: string,
+    extension: string
   }
 
   const filesDirectory = path.join(process.cwd(), 'files');
@@ -21,8 +22,12 @@ export interface File {
     const fileNames = fs.readdirSync(filesDirectory);
     const allFilesData = fileNames.map((fileName) => {
       // Remove ".md" from file name to get id
-      const id = fileName.replace(/\.md$/, '');
-  
+
+      // const id = fileName.replace(/\.[^/.]+$/, "");
+      const id = fileName;
+      // get file extension
+      const extension = path.extname(fileName);
+
       // Read markdown file as string
       const fullPath = path.join(filesDirectory, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
@@ -35,6 +40,7 @@ export interface File {
       // Combine the data with the id
       return {
         id,
+        extension,
         fileSize,
         ...matterResult.data,
         fileContents,
