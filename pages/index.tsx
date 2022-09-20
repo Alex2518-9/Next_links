@@ -3,7 +3,7 @@ import Layout, { siteTitle } from "../components/Layout";
 import { File } from "./api/getFiles";
 import styles from "../styles/Home.module.css";
 import Card from "../components/Card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Button from "../components/Button";
 import DownIcon from "../public/chevronDown.svg";
 import PlusIcon from "../public/plusIcon.svg";
@@ -12,22 +12,14 @@ import TrashIcon from "../public/trashIcon.svg";
 import SelectedCard from "../components/SelectedCard";
 import DownloadButton from "../components/DownloadButton";
 import axios from "axios";
-import { downloadFile } from "./api/downloadSelectedFile";
-
-// interface AllPostDataProps {
-//   params: File[];
-// }
-
-// export async function downloadFiles ({params}: AllPostDataProps) => {
-//   const downloadDatas = await downloadFile(params)
-//   return {downloadDatas};
-// }
 
 const Home = () => {
   const [search, setSearch] = useState<string[]>([]);
   const [selectedCard, setSelectedCard] = useState<string[]>([]);
   const [selectedMode, setSelectedMode] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
+
+  const inputFile = useRef(null);
 
   // fetching files
   useEffect(() => {
@@ -74,14 +66,39 @@ const Home = () => {
 
   // download files
   const onDownload = (ids: string[]) => {
-    if (selectedCard.length > 0) {
-      axios({
-        method: "get",
-        url: "../pages/api/downloadSelectedFile",
-        data: ids,
-      });
+    console.log(ids);
+
+    if (ids.length > 0) {
+      for (const id of ids) {
+        const queryParams = new URLSearchParams();
+        queryParams.append("id", id);
+        axios({
+          method: "get",
+          url: `/api/getFilesPath`,
+          params: queryParams,
+          responseType: "blob",
+        }).then(({ data }) => {
+          const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+
+          const link = document.createElement("a");
+
+          link.href = downloadUrl;
+
+          link.setAttribute("download", `${id}.txt`); //any other extension
+
+          document.body.appendChild(link);
+
+          link.click();
+
+          link.remove();
+        });
+      }
     }
   };
+
+  const onUpload = () => {
+      inputFile.current.click();
+  }
 
   return (
     <Layout home>
@@ -122,7 +139,7 @@ const Home = () => {
                   text="Upload"
                   icon={DownIcon}
                   className={styles.upload}
-                  onClick={abc}
+                  onClick={onUpload}
                 />
                 <Button
                   text="Create"
@@ -167,6 +184,7 @@ const Home = () => {
           {selectedMode && (
             <div className={styles.counter}>{selectedCard.length}</div>
           )}
+          <input type="file" id="file" ref={inputFile} style={{display: 'none'}} />
         </div>
       </>
     </Layout>
