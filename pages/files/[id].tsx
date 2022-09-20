@@ -6,8 +6,7 @@ import utilStyles from "../../styles/utils.module.css";
 import styles from "../../styles/Card.module.css";
 import Link from "next/link";
 import getPostData, { FileData } from "../api/getFileById";
-import { useEffect, useState } from "react";
-import axios from 'axios'
+
 
 interface PageProps {
   params: { id: string };
@@ -38,14 +37,7 @@ export async function getStaticPaths() {
 
 export default function Post({ postData }: PostProps) {
 
-  // const [data, setData] = useState<File[]>([]);
 
-  // useEffect(() => {
-  //   axios.get('../api/getFileById').then((res) => {
-  //     const oneFile = res.data;
-  //     setData(oneFile);
-  //   })
-  // }, []);
 
   return (
     <Layout home>
