@@ -15,11 +15,9 @@ export default async function getFilePath(req: NextApiRequest, res: NextApiRespo
     res.status(400).json({ message: 'id parameter must be string.' })
   } else {
     const fullPath = path.join(filesDirectory, `${id}`);
-    console.log(fullPath);
 
-    // const content = fs.readFileSync(fullPath)
-    // console.log(content);
+    const content = fs.readFileSync(fullPath)
 
-    res.status(200).json(fullPath);
+    res.status(200).send(content);
   }
 }
