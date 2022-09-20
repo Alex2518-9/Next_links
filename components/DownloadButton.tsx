@@ -11,11 +11,11 @@ interface DownloadBtnProps extends ButtonProps{
 
 
 
-const DownloadButton = ({text,  className,  icon}:DownloadBtnProps) => {
+const DownloadButton = ({text,  className,  icon, onClick}:DownloadBtnProps) => {
 
     
   return (
-    <button className={classNames(`${styles.btn} ${className}`)} >
+    <button className={classNames(`${styles.btn} ${className}`)} onClick={onClick}>
         <a download={true} target='blank' rel='noreferrer'>{text}</a>
         <Image width={14} height={14} src={icon} alt="actionButton"/>
     </button>
