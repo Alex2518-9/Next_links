@@ -19,7 +19,7 @@ const Home = () => {
   const [selectedMode, setSelectedMode] = useState<boolean>(false);
   const [files, setFiles] = useState<File[]>([]);
 
-  const inputFile = useRef(null);
+  const inputFile = useRef<HTMLInputElement>(null);
 
   // fetching files
   useEffect(() => {
@@ -97,8 +97,8 @@ const Home = () => {
   };
 
   const onUpload = () => {
-      inputFile.current.click();
-  }
+    inputFile.current && inputFile.current.click();
+  };
 
   return (
     <Layout home>
@@ -184,7 +184,12 @@ const Home = () => {
           {selectedMode && (
             <div className={styles.counter}>{selectedCard.length}</div>
           )}
-          <input type="file" id="file" ref={inputFile} style={{display: 'none'}} />
+          <input
+            type="file"
+            id="file"
+            ref={inputFile}
+            style={{ display: "none" }}
+          />
         </div>
       </>
     </Layout>
